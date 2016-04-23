@@ -11,7 +11,8 @@ if (popupMode) {
     }
 } else if (request_uri.param('debug')) {
 } else {
-    chrome.tabs.getSelected(null, function(tab) {
+    chrome.tabs.query({active: true}, function(tabs) {
+        var tab = tabs[0]
         chrome.windows.get(tab.windowId, function(win) {
             window.currentWin = win;
             BG.popupWinInfo = {
@@ -92,7 +93,8 @@ function loadWindowPosition(win) {
 function getInformation() {
     var d = new Deferred();
     if (popupMode) {
-        BG.chrome.tabs.getSelected(null, function(tab) {
+        BG.chrome.tabs.query({active: true}, function(tabs) {
+            var tab = tabs[0]
             d.call({
                 url: tab.url,
                 faviconUrl: tab.faviconUrl,
@@ -1487,22 +1489,21 @@ var Page;
         this._$elem = null;
     }
     function _Page_initialize() {
-        this._$elem = $('#'+this._pageElemId);
-        this._$elem.hide();
+        $('#'+this._pageElemId).hide();
     }
     function _Page_finalize() {
-        this._$elem.hide();
+        $('#'+this._pageElemId).hide();
         this._$elem = null;
         delete this.onshow;
         delete this.onhide;
     }
     function _Page_show() {
         if ( this.onshow ) this.onshow();
-        this._$elem.show();
+        $('#'+this._pageElemId).show();
     }
     function _Page_hide() {
         if ( this.onhide ) this.onhide();
-        this._$elem.hide();
+        $('#'+this._pageElemId).hide();
     }
 }).call( this );
 
