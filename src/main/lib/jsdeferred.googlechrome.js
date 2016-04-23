@@ -20,13 +20,13 @@ if (typeof Deferred.chrome == 'undefined')
 
     Deferred.chrome.registers = function(name, hash) {
         var chromeTarget = chrome[name];
-        if (!chromeTarget) return console.log('chrome.' + name + ' is not found.');
+        if (!chromeTarget) return console.trace('chrome.' + name + ' is not found.');
         if (typeof Deferred.chrome[name] == 'undefined') Deferred.chrome[name] = {};
 
         var target = Deferred.chrome[name];
         for (var key in hash) {
             if (!chromeTarget[key]) {
-                console.log('chrome.' + name + '.' + key + ' is not found.');
+                console.trace('chrome.' + name + '.' + key + ' is not found.');
                 continue;
             }
             var t = hash[key];
@@ -41,7 +41,6 @@ if (typeof Deferred.chrome == 'undefined')
         executeScript     : [2],
         get               : [1],
         getAllInWindow    : [1],
-        getSelected       : [1],
         insertCSS         : [2],
         move              : [2],
         remove            : [1],

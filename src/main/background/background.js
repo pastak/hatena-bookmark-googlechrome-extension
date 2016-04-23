@@ -22,9 +22,13 @@ var createTabWithConfigPage = function () {
 
 // 拡張機能のインストール時や Chrome 本体のアップデート時などに呼ばれる
 // See: http://developer.chrome.com/apps/runtime.html#event-onInstalled
-chrome.runtime.onInstalled.addListener(function (evt) {
+try {
+  chrome.runtime.onInstalled.addListener(function (evt) {
     if (!isEuraAgreed()) createTabWithConfigPage();
-});
+  });
+} catch (e) {
+  console.log(e)
+}
 
 var Manager = $({});
 
@@ -56,7 +60,7 @@ $.extendWithAccessorProperties(Manager, {
         chrome.tabs.get(tabId, Manager.editBookmarkTab);
     },
     editBookmarkCurrentTab: function() {
-        chrome.tabs.getSelected(null, Manager.editBookmarkTab);
+        chrome.tabs.query({active: true}, function (tabs) {Manager.editBookmarkTab(tabs[0])});
     },
     saveBookmarkError: function(data) {
         console.error(data);
@@ -111,26 +115,26 @@ $.extendWithAccessorProperties(Manager, {
 
             HTTPCache.counter.get(tab.url).next(function(count) {
                 if (count == null) {
-                    chrome.browserAction.setBadgeText({tabId: tab.id, 
+                    chrome.browserAction.setBadgeText({tabId: tab.id,
                         text: '-',
                     });
-                    chrome.browserAction.setBadgeBackgroundColor({tabId: tab.id, 
+                    chrome.browserAction.setBadgeBackgroundColor({tabId: tab.id,
                         color: [200,200,200, 255],
                     });
                 } else {
-                    chrome.browserAction.setBadgeText({tabId: tab.id, 
+                    chrome.browserAction.setBadgeText({tabId: tab.id,
                         text: "" + count,
                     });
-                    chrome.browserAction.setBadgeBackgroundColor({tabId: tab.id, 
+                    chrome.browserAction.setBadgeBackgroundColor({tabId: tab.id,
                         color: [96,255,0, 200],
                     });
                 }
             });
         } else {
-            chrome.browserAction.setBadgeText({tabId: tab.id, 
+            chrome.browserAction.setBadgeText({tabId: tab.id,
                 text: '',
             });
-            chrome.browserAction.setBadgeBackgroundColor({tabId: tab.id, 
+            chrome.browserAction.setBadgeBackgroundColor({tabId: tab.id,
                 color: [99,99,99, 255],
             });
         }
@@ -145,7 +149,8 @@ $.extendWithAccessorProperties(Manager, {
         });
     },
     updateCurrentTab: function() {
-        chrome.tabs.getSelected(null, function(t) {
+        chrome.tabs.query({active: true}, function(tabs) {
+          var t = tabs[0]
             chrome.windows.getCurrent(function(w) {
                 if (t && w && w.id == t.windowId) {
                     Manager.updateTab(t);
@@ -388,6 +393,3 @@ setTimeout(function() {
 chrome.windows.create({url:'../tests/test.html'});
 }, 10);
 */
-
-
-

@@ -119,7 +119,7 @@ var Utils = {
         return 'http://cdn-ak.favicon.st-hatena.com/?url=' + encodeURIComponent(url.replace('#', '%23'));
     },
     editBookmarkCurrent: function(winId) {
-        chrome.tabs.getSelected(winId, function(tabs) {
+        chrome.tabs.query({windowId: winId, active: true}, function(tabs) {
             chrome.extension.getBackgroundPage().Manager.editBookmarkTab(tabs.id);
         });
     },
@@ -262,7 +262,7 @@ if (typeof jQuery != 'undefined') {
                     // Recurse if we're merging object values
                     if ( deep && !getterFlag && copy && typeof copy === "object" && !copy.nodeType ) {
                         src = target[ name ];
-                        target[ name ] = jQuery.extend( deep, 
+                        target[ name ] = jQuery.extend( deep,
                             // Never move original objects, clone them
                             src || ( copy.length != null ? [ ] : { } )
                         , copy );

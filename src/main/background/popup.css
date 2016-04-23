@@ -23,6 +23,7 @@
 
 input[type="checkbox"] {
   margin-right: 5px;
+  display: inline-block;
 }
 html {
 }
@@ -557,6 +558,8 @@ span#favorites {
 #buttons > .table-row > .edit-cell {
   display: inline-block;
 }
+
+
 
 label {
   cursor: pointer;
@@ -1444,8 +1447,16 @@ body.sharing-options-panel-opend .option-help-tooltip {
 #checkbox-options #checkbox-options-minimized li {
   margin-right: 4px;
   line-height: 16px;
+  width: 40px;
 }
 
+#checkbox-options #checkbox-options-minimized li label {
+  width: 100%;
+}
+
+#checkbox-options #checkbox-options-minimized li input {
+  display: inline-block;
+}
 /**
  * 非公開ボタンのための CSS
  */

@@ -204,9 +204,9 @@ User.prototype = {
              if (b) {
                  b.set('comment', data.comment_raw || '');
                  Model.getDatabase().transaction(function() {
-                     b.save().next(function() {
-                         $(document).trigger('BookmarksUpdated');
-                     });
+                   b.save().next(function() {
+                     $(document).trigger('BookmarksUpdated');
+                   });
                  });
              } else {
                  p('update bookmark - save sync' + Sync._syncing);
@@ -226,5 +226,3 @@ User.prototype = {
     clear: function user_clear() {
     }
 };
-
-
